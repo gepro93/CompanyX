@@ -38,7 +38,7 @@ public class UserDelete extends AppCompatActivity {
         final ListAdapter adapter = new SimpleAdapter(UserDelete.this, userList, R.layout.user_delete_row,new String[]{"USER_NAME","PERMISSION_NAME","USER_STATUS"}, new int[]{R.id.twName, R.id.twPermission, R.id.twStatus});
         lwUserDelete.setAdapter(adapter);
 
-
+        lwUserDelete.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         btUserDeleteExec.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,9 +48,10 @@ public class UserDelete extends AppCompatActivity {
                 if (pos > -1)
                 {
                     //Törlés adapterből
-                    
-
+                    userList.remove(pos);
                 }
+
+                ((SimpleAdapter) adapter).notifyDataSetChanged();
             }
         });
 
