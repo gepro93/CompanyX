@@ -48,13 +48,7 @@ public class UserDelete extends AppCompatActivity {
                 if (pos > -1)
                 {
                     //Törlés adapterből
-                    LinkedList<Integer> list = new LinkedList<Integer>();
-                    for(int i=0;i<adapter.getCount();i++){
-                        if(checks.get(i)==true)
-                        {
-                            list.addFirst(i);
-                        }
-                    }
+                    
 
                 }
             }
