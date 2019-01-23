@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdminUserMenu"
+    android:orientation="vertical"
+    android:weightSum="1000"
+    android:background="@drawable/ic_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="180">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Felhasználók kezelése"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:textSize="25sp"
+            android:textColor="@color/colorWhite"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:textSize="15sp"
+            android:textColor="@color/colorWhite"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="220"
+        android:orientation="horizontal">
+
+        <Button
+            android:background="@drawable/button_v2_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:drawableTop="@drawable/menu_button_useradd"
+            android:text="Létrehozás"
+            android:textColor="@drawable/button_text_color2"
+            android:textAllCaps="false"
+            android:id="@+id/btUserCreate"
+            android:layout_marginTop="35sp"
+            android:layout_marginLeft="40sp"
+            android:layout_marginRight="20sp"
+            />
+
+        <Button
+            android:background="@drawable/button_v2_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:drawableTop="@drawable/menu_button_userperm"
+            android:layout_marginTop="35sp"
+            android:layout_marginRight="40sp"
+            android:layout_marginLeft="20sp"
+            android:text="Státusz"
+            android:textColor="@drawable/button_text_color2"
+            android:textAllCaps="false"
+            android:id="@+id/btUserStatus"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="220"
+        android:orientation="horizontal">
+
+        <Button
+            android:background="@drawable/button_v2_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:drawableTop="@drawable/menu_button_useredit"
+            android:text="Módosítás"
+            android:textColor="@drawable/button_text_color2"
+            android:textAllCaps="false"
+            android:id="@+id/btUserModify"
+            android:layout_marginTop="35sp"
+            android:layout_marginLeft="40sp"
+            android:layout_marginRight="20sp"
+            />
+
+        <Button
+            android:background="@drawable/button_v2_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:drawableTop="@drawable/menu_button_userdelete"
+            android:layout_marginTop="35sp"
+            android:layout_marginRight="40sp"
+            android:layout_marginLeft="20sp"
+            android:text="Törlés"
+            android:textColor="@drawable/button_text_color2"
+            android:textAllCaps="false"
+            android:id="@+id/btUserDelete"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="350"
+        android:orientation="vertical">
+
+        <Button
+            android:background="@drawable/button_v2_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/menu_button_userlist"
+            android:layout_marginTop="25sp"
+            android:layout_gravity="center"
+            android:text="Felhasználói lista"
+            android:textColor="@drawable/button_text_color2"
+            android:textAllCaps="false"
+            android:id="@+id/btUserList"
+            />
+
+        <Button
+            android:background="@drawable/button_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/menu_logout"
+            android:layout_marginTop="25sp"
+            android:layout_gravity="center"
+            android:text="Vissza"
+            android:textColor="@drawable/button_text_color"
+            android:textAllCaps="false"
+            android:id="@+id/btUserMenuBack"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>
