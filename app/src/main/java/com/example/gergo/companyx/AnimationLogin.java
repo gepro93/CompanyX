@@ -8,7 +8,7 @@ import android.view.animation.Transformation;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class ProgressBarAnimation extends Animation {
+public class AnimationLogin extends Animation {
 
     private Context context;
     private ProgressBar progressBar;
@@ -16,7 +16,7 @@ public class ProgressBarAnimation extends Animation {
     private float from;
     private float to;
 
-    public ProgressBarAnimation(Context context,ProgressBar progressBar,TextView textView,float from, float to){
+    public AnimationLogin(Context context, ProgressBar progressBar, TextView textView, float from, float to){
         this.context = context;
         this.progressBar = progressBar;
         this.textView = textView;

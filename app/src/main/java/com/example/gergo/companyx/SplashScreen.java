@@ -1,18 +1,13 @@
 package com.example.gergo.companyx;
 
-import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private static int SPLASH_TIME_OUT = 3000;
     ImageView iwLogo;
     TextView twLogo, twPrecentage;
     ProgressBar progressBar;
@@ -42,7 +37,7 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     public void progressBarAnimation(){
-        ProgressBarAnimation anim = new ProgressBarAnimation(this,progressBar,twPrecentage,0f,100f);
+        AnimationLogin anim = new AnimationLogin(this,progressBar,twPrecentage,0f,100f);
         anim.setDuration(6000);
         progressBar.setAnimation(anim);
     }

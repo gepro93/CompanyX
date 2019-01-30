@@ -699,7 +699,7 @@ public class Database extends SQLiteOpenHelper{
         }
     }
 
-    //Felhasználó létezésének ellenőzése belépéshez
+    //Jogosultság ellenőrzése
     public Boolean permissionCheck(){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + PERMISSION_TABLE + " WHERE jogosultsag_id=1 AND jogosultsag_id=2 AND jogosultsag_id=3 AND jogosultsag_id=4", null);
