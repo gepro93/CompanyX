@@ -2,7 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="false">
         <layer-list>
-            <!-- SHADOW -->
             <item>
                 <shape>
                     <solid android:color="#767676"/>
@@ -13,8 +12,6 @@
                     <corners android:radius="25dp"/>
                 </shape>
             </item>
-            <!-- BUTTON alttan gölge
-              android:right="5px" to make it round-->
             <item
                 android:bottom="5px"
                 >

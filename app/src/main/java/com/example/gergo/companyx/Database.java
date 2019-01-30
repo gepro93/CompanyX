@@ -602,25 +602,25 @@ public class Database extends SQLiteOpenHelper{
 
         String query = "SELECT u."+ USER_NAME + ", p."+ PERMISSION_NAME +", u." + USER_STATUS +
                 " FROM " + USER_TABLE + " AS u" +
-                " LEFT JOIN " + PERMISSION_TABLE + " AS p ON u." + USER_PERMISSION_ID + " = p."+ PERMISSION_ID +
-                " GROUP BY " + USER_NAME;
+                " LEFT JOIN " + PERMISSION_TABLE + " AS p ON u." + USER_PERMISSION_ID + " = p."+ PERMISSION_ID;
+
         Cursor cursor = db.rawQuery(query,null);
 
         while(cursor.moveToNext()){
             HashMap<String,String> user = new HashMap<>();
-            user.put("USER_NAME","Felhasználónév: " + cursor.getString(cursor.getColumnIndex(USER_NAME)));
-            user.put("PERMISSION_NAME","Jogosultság: "+ cursor.getString(cursor.getColumnIndex(PERMISSION_NAME)));
+            user.put("USER_NAME",cursor.getString(cursor.getColumnIndex(USER_NAME)));
+            user.put("PERMISSION_NAME",cursor.getString(cursor.getColumnIndex(PERMISSION_NAME)));
 
             user.put("USER_STATUS", cursor.getString(cursor.getColumnIndex(USER_STATUS)));
                 switch (cursor.getInt(cursor.getColumnIndex(USER_STATUS))){
                     case 0:
-                        user.put("USER_STATUS", "Státusz: Inaktív");
+                        user.put("USER_STATUS","Inaktív");
                         break;
 
                     case 1:
-                        user.put("USER_STATUS", "Státusz: Aktív");
+                        user.put("USER_STATUS","Aktív");
                         break;
-                    default: user.put("USER_STATUS", "Státusz: Nincs");
+                    default: user.put("USER_STATUS","Nincs");
                     break;
             }
 
@@ -707,6 +707,12 @@ public class Database extends SQLiteOpenHelper{
         if(cursor.getCount()>0){
             return true;
         }else return false;
+    }
+
+    //Felhasználó törlése
+    public Boolean UserDelete(String userName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return  db.delete(USER_TABLE,USER_NAME + "="+'"'+userName+'"',null) > 0;
     }
 
 }
