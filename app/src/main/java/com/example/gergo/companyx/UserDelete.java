@@ -34,7 +34,8 @@ public class UserDelete extends AppCompatActivity {
         init();
 
         final ArrayList<HashMap<String,String>> userList = db.viewUsers();
-        final ListAdapter adapter = new SimpleAdapter(UserDelete.this, userList, R.layout.user_delete_row,new String[]{"USER_NAME","PERMISSION_NAME","USER_STATUS"}, new int[]{R.id.twName, R.id.twPermission, R.id.twStatus});
+        final ListAdapter adapter = new SimpleAdapter(UserDelete.this, userList, R.layout.user_delete_row,
+                new String[]{"USER_NAME","PERMISSION_NAME","USER_STATUS"}, new int[]{R.id.twName, R.id.twPermission, R.id.twStatus});
 
         lwUserDelete.setAdapter(adapter);
 

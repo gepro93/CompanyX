@@ -49,6 +49,14 @@ public class AdminUserMenu extends AppCompatActivity {
                 finish();
             }
         });
+
+        btUserModify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AdminUserMenu.this, UserModifyList.class));
+                finish();
+            }
+        });
     }
 
     public void init(){

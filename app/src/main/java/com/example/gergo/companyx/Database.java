@@ -572,18 +572,6 @@ public class Database extends SQLiteOpenHelper{
         return status;*/
     }
 
-    //Felhasználónév kiíráshoz lekérdezés username és password alapján
-    public String fullNameLekerdez(String username, String password){
-        String felhasznaloNev="";
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor eredmeny = db.rawQuery("Select FULLNAME from " + USER_TABLE + " where felhNeve='" + username + "' AND PASSWORD='" + password + "'", null);
-        if (eredmeny!=null && eredmeny.getCount()>0) {
-            eredmeny.moveToFirst();
-            felhasznaloNev = eredmeny.getString(eredmeny.getColumnIndex("FULLNAME"));
-        }
-        return felhasznaloNev;
-    }
-
     /*public Cursor viewUsers(){
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT u."+ USER_NAME + ", p."+ PERMISSION_NAME +", u." + USER_STATUS +
@@ -713,6 +701,45 @@ public class Database extends SQLiteOpenHelper{
     public Boolean UserDelete(String userName){
         SQLiteDatabase db = this.getWritableDatabase();
         return  db.delete(USER_TABLE,USER_NAME + "="+'"'+userName+'"',null) > 0;
+    }
+
+    //Felhasználó módosítása
+    public Boolean userModify(String oldUserName,String userName, String userPassword, Boolean userStatus, Integer userPermission){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(USER_NAME, userName);
+        contentValues.put(USER_PASSWORD, userPassword);
+        contentValues.put(USER_STATUS, userStatus);
+        contentValues.put(USER_PERMISSION_ID, userPermission);
+
+        int i = db.update(USER_TABLE, contentValues, USER_NAME + "=" + '"'+oldUserName+'"',null);
+        return i > 0;
+    }
+
+    //Felhasználó módosítása jelszó nélkül
+    public Boolean userModifyWithoutPassword(String oldUserName, String userName, Boolean userStatus, Integer userPermission){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(USER_NAME, userName);
+        contentValues.put(USER_STATUS, userStatus);
+        contentValues.put(USER_PERMISSION_ID, userPermission);
+
+        int i = db.update(USER_TABLE, contentValues, USER_NAME + "=" + '"'+oldUserName+'"',null);
+        return i > 0;
+    }
+
+    //Felhasználónév ellenőrzése módosításkor
+    public Integer userNameCheckForModify(String username){
+        Integer userCount=0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor eredmeny = db.rawQuery("SELECT COUNT("+USER_NAME+") FROM " + USER_TABLE + " WHERE felhNeve='" + username +"'", null);
+        if (eredmeny!=null && eredmeny.getCount()>0) {
+            eredmeny.moveToFirst();
+            userCount = eredmeny.getInt(eredmeny.getColumnIndex("USER_NAME"));
+        }
+        return userCount;
     }
 
 }
