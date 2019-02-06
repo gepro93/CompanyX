@@ -27,8 +27,7 @@ public class UserModify extends AppCompatActivity {
     private EditText etUsernameMod, etPasswordMod1, etPasswordMod2;
     private Spinner spPermissionMod, spStatusMod;
     private Button btUserModifyExecute, btUserModifyBack;
-    private Integer selectedPermission, selectedStatus;
-    private Boolean userStatus;
+    public static Integer selectedPermission, selectedStatus;
     private Database db;
     private TextView twUserName;
     private ProgressDialog progress;
@@ -71,8 +70,6 @@ public class UserModify extends AppCompatActivity {
 
         twUserName.setText(userName);
         etUsernameMod.setText(userName);
-
-        Toast.makeText(this, userName, Toast.LENGTH_SHORT).show();
 
         switch (userPerm){
             case "Admin": spPermissionMod.setSelection(0);
@@ -122,81 +119,7 @@ public class UserModify extends AppCompatActivity {
         btUserModifyExecute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String modifiedUserName = etUsernameMod.getText().toString();
-                final String modifiedPassword1 = etPasswordMod1.getText().toString();
-                final String modifiedPassword2 = etPasswordMod2.getText().toString();
-
-                if(selectedStatus == 0){
-                    userStatus = true;
-                }else {userStatus = false;}
-
-
-                if(modifiedUserName.equals("")){
-                    etUsernameMod.setError("A felhasználónév megadás kötelező!");
-                }else if(modifiedUserName.equals("") && modifiedPassword2.equals("")){
-                    if(modifiedUserName.equals(twUserName.getText().toString())){
-                        AlertDialog.Builder builder = new AlertDialog.Builder(UserModify.this);
-
-                        builder.setCancelable(true);
-                        builder.setTitle("Módosítás");
-                        builder.setMessage("Valóban módosítani szeretnéd " + twUserName.getText().toString() + "felhasználót?");
-
-                        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.cancel();
-                            }
-                        });
-
-                        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Boolean userModify = db.userModifyWithoutPassword(modifiedUserName,modifiedUserName,userStatus,selectedPermission);
-                                if(userModify){
-                                    new Task1().execute();
-                                }
-                            }
-                        });
-                        builder.show();
-
-                    }else {
-                        Integer userCountCheck = db.userNameCheckForModify(modifiedUserName);
-
-                        if (userCountCheck > 1){
-                            Toast.makeText(UserModify.this, "Felhasználónév foglalt!", Toast.LENGTH_SHORT).show();
-
-                        }else{
-                            AlertDialog.Builder builder = new AlertDialog.Builder(UserModify.this);
-
-                            builder.setCancelable(true);
-                            builder.setTitle("Módosítás");
-                            builder.setMessage("Valóban módosítani szeretnéd "+'"'+ twUserName.getText().toString() +'"'+" felhasználót?");
-
-                            builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
-                                }
-                            });
-
-                            builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Boolean userModify = db.userModify(modifiedUserName,modifiedUserName,modifiedPassword1,userStatus,selectedPermission);
-                                    if(userModify){
-                                        new Task1().execute();
-                                    }
-                                }
-                            });
-                            builder.show();
-                        }
-                    }
-                }else if(!modifiedPassword1.equals(modifiedPassword2)){
-                    etPasswordMod1.setError("A jelszavaknak meg kell egyezniük!");
-                    etPasswordMod2.setError("A jelszavaknak meg kell egyezniük!");
-
-                }
-
+                userModify(); //Felhasználó módosítása
             }
         });
 
@@ -246,6 +169,88 @@ public class UserModify extends AppCompatActivity {
         builder.show();
     }
 
+    public void userModify(){
+        final String modifiedUserName = etUsernameMod.getText().toString();
+        final String modifiedPassword1 = etPasswordMod1.getText().toString();
+        final String modifiedPassword2 = etPasswordMod2.getText().toString();
+        final String userNameOld = twUserName.getText().toString();
+        final boolean userStatus;
+        final int userPerm = selectedPermission+1;
+
+        if(selectedStatus == 0){
+            userStatus = true;
+        }else {userStatus = false;}
+
+
+        if(modifiedUserName.equals("")){
+            etUsernameMod.setError("A felhasználónév megadás kötelező!");
+        }else if(modifiedPassword1.equals("") && modifiedPassword2.equals("")){
+            if(modifiedUserName.equals(userNameOld)){
+                AlertDialog.Builder builder = new AlertDialog.Builder(UserModify.this);
+
+                builder.setCancelable(true);
+                builder.setTitle("Módosítás");
+                builder.setMessage("Valóban módosítani szeretnéd " + userNameOld + "felhasználót?");
+
+                builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+                builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Boolean userModify = db.userModifyWithoutPassword(userNameOld,modifiedUserName,userStatus,userPerm);
+                        if(userModify){
+                            new Task1().execute();
+                            twUserName.setText(modifiedUserName);
+                        }
+                    }
+                });
+                builder.show();
+
+            }else {
+                Integer userCountCheck = db.userNameCheckForModify(modifiedUserName);
+
+                if (userCountCheck >= 1){
+                    Toast.makeText(UserModify.this, "Felhasználónév foglalt!", Toast.LENGTH_SHORT).show();
+
+                }else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UserModify.this);
+
+                    builder.setCancelable(true);
+                    builder.setTitle("Módosítás");
+                    builder.setMessage("Valóban módosítani szeretnéd "+'"'+ userNameOld +'"'+" felhasználót?");
+
+                    builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+
+                    builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Boolean userModify = db.userModifyWithoutPassword(userNameOld,modifiedUserName,userStatus,userPerm);
+                            if(userModify){
+                                new Task1().execute();
+                                twUserName.setText(modifiedUserName);
+                            }
+                        }
+                    });
+                    builder.show();
+                }
+            }
+        }else if(!modifiedPassword1.equals(modifiedPassword2)){
+            etPasswordMod1.setError("A jelszavaknak meg kell egyezniük!");
+            etPasswordMod2.setError("A jelszavaknak meg kell egyezniük!");
+
+        }
+
+    }
 
     class Task1 extends AsyncTask<Void, Void, String> {
 

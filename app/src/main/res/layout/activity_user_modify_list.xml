@@ -62,14 +62,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:background="@drawable/button_background"
-            android:drawableLeft="@drawable/menu_logout"
-            android:text="Vissza"
+            android:drawableLeft="@drawable/menu_modify"
+            android:text="Módosít"
             android:textAllCaps="false"
             android:textColor="@drawable/button_text_color"
             android:layout_gravity="center"
-            android:layout_marginLeft="40sp"
             android:layout_marginRight="20sp"
-            android:id="@+id/btUserModBack"
+            android:layout_marginLeft="40sp"
+            android:id="@+id/btUserMod"
             />
 
         <Button
@@ -77,15 +77,17 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:background="@drawable/button_background"
-            android:drawableLeft="@drawable/menu_modify"
-            android:text="Módosít"
+            android:drawableLeft="@drawable/menu_logout"
+            android:text="Vissza"
             android:textAllCaps="false"
             android:textColor="@drawable/button_text_color"
             android:layout_gravity="center"
-            android:layout_marginRight="40sp"
             android:layout_marginLeft="20sp"
-            android:id="@+id/btUserMod"
+            android:layout_marginRight="40sp"
+            android:id="@+id/btUserModBack"
             />
+
+
 
     </LinearLayout>
 
