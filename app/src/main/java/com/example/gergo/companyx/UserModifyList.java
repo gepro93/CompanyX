@@ -1,5 +1,6 @@
 package com.example.gergo.companyx;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -46,8 +47,16 @@ public class UserModifyList extends AppCompatActivity {
         btUserModBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                    startActivity(new Intent(UserModifyList.this, AdminUserMenu.class));
+                    finish();
+            }
+        });
 
-                int pos  = lwUserModify.getCheckedItemPosition();
+        btUserMod.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            int pos  = lwUserModify.getCheckedItemPosition();
 
                 if (pos > -1)
                 {
@@ -68,20 +77,10 @@ public class UserModifyList extends AppCompatActivity {
 
                     editor.apply();
                     editor.commit();
-
-                    startActivity(new Intent(UserModifyList.this, AdminUserMenu.class));
-                    finish();
+                    startActivity(new Intent(UserModifyList.this, UserModify.class));
                 }else{
                     Toast.makeText(UserModifyList.this, "Módosításhoz jelölj ki egy elemet!", Toast.LENGTH_SHORT).show();
                 }
-
-            }
-        });
-
-        btUserMod.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(UserModifyList.this, UserModify.class));
             }
         });
 
@@ -92,5 +91,29 @@ public class UserModifyList extends AppCompatActivity {
         btUserModBack = (Button) findViewById(R.id.btUserModBack);
         btUserMod = (Button) findViewById(R.id.btUserMod);
         lwUserModify = (ListView) findViewById(R.id.lwUserModify);
+    }
+
+    public void onBackPressed(){
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(UserModifyList.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kilépés");
+        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+                System.exit(0);
+            }
+        });
+        builder.show();
     }
 }

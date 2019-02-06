@@ -23,8 +23,7 @@ public class AdminMenu extends AppCompatActivity {
         btUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent userControl = new Intent(AdminMenu.this, AdminUserMenu.class);
-                startActivity(userControl);
+                startActivity(new Intent(AdminMenu.this, AdminUserMenu.class));
                 finish();
             }
         });
@@ -32,8 +31,7 @@ public class AdminMenu extends AppCompatActivity {
         btLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent adminKilep = new Intent(AdminMenu.this, Login.class);
-                startActivity(adminKilep);
+                startActivity(new Intent(AdminMenu.this, Login.class));
                 finish();
             }
         });

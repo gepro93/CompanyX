@@ -66,7 +66,10 @@ public class UserDelete extends AppCompatActivity {
                 builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        int pos  = lwUserDelete.getCheckedItemPosition();
+
+                        userDelete(userList,adapter); //Felhasználó törlése
+
+                        /*int pos  = lwUserDelete.getCheckedItemPosition();
 
                         if (pos > -1)
                         {
@@ -80,7 +83,7 @@ public class UserDelete extends AppCompatActivity {
                                 progressDialog();
                             }else Toast.makeText(UserDelete.this, "Adatbázis hiba a törléskor!", Toast.LENGTH_SHORT).show();
                         }
-                        ((SimpleAdapter) adapter).notifyDataSetChanged();
+                        ((SimpleAdapter) adapter).notifyDataSetChanged();*/
                     }
                 });
                 builder.show();
@@ -91,6 +94,7 @@ public class UserDelete extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(UserDelete.this,AdminUserMenu.class));
+                finish();
             }
         });
 
@@ -100,8 +104,50 @@ public class UserDelete extends AppCompatActivity {
         lwUserDelete = (ListView) findViewById(R.id.lwUserDelete);
         btUserDeleteExec = (Button) findViewById(R.id.btUserDeleteExec);
         btUserDeleteBack = (Button) findViewById(R.id.btUserDeleteBack);
-
     }
+
+    public void userDelete(ArrayList<HashMap<String,String>> arrayList, ListAdapter listAdapter){
+        int pos  = lwUserDelete.getCheckedItemPosition();
+
+        if (pos > -1)
+        {
+            View item = lwUserDelete.getChildAt(pos);
+            TextView tw = (TextView)item.findViewById(R.id.twName);
+            String text = tw.getText().toString();
+            Boolean userDelete = db.UserDelete(text);
+
+            if (userDelete){
+                arrayList.remove(pos);
+                progressDialog();
+            }else Toast.makeText(UserDelete.this, "Adatbázis hiba a törléskor!", Toast.LENGTH_SHORT).show();
+        }
+        ((SimpleAdapter) listAdapter).notifyDataSetChanged();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserDelete.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kilépés");
+        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+                System.exit(0);
+            }
+        });
+        builder.show();
+    }
+
 
     public void progressDialog(){
         progress = new ProgressDialog(UserDelete.this);

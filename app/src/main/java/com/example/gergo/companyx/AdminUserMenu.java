@@ -1,6 +1,8 @@
 package com.example.gergo.companyx;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,8 +21,7 @@ public class AdminUserMenu extends AppCompatActivity {
         btUserList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent userList = new Intent(AdminUserMenu.this, UserList.class);
-                startActivity(userList);
+                startActivity(new Intent(AdminUserMenu.this, UserList.class));
                 finish();
             }
         });
@@ -28,8 +29,7 @@ public class AdminUserMenu extends AppCompatActivity {
         btUserMenuBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent adminVissza = new Intent(AdminUserMenu.this, AdminMenu.class);
-                startActivity(adminVissza);
+                startActivity(new Intent(AdminUserMenu.this, AdminMenu.class));
                 finish();
             }
         });
@@ -66,6 +66,30 @@ public class AdminUserMenu extends AppCompatActivity {
         btUserStatus = (Button) findViewById(R.id.btUserStatus);
         btUserList = (Button) findViewById(R.id.btUserList);
         btUserMenuBack = (Button) findViewById(R.id.btUserMenuBack);
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(AdminUserMenu.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kilépés");
+        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+                System.exit(0);
+            }
+        });
+        builder.show();
     }
 
 }

@@ -21,97 +21,105 @@ public class Login extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        init();
 
-        //Bejelentkezés
+        init(); //Inicializálás
+        adminCreation(); //Admin létrehozása ha nem létezik
+        permissionCreation(); //Permission létrehozása ha nem létezik
+
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            String userName = etUsername.getText().toString();
-            String userPassword = etPassword.getText().toString();
-
-            Boolean userCheck = db.userCheck(userName,userPassword);
-            Integer permCheck = db.userPermissionCheck(userName,userPassword);
-            Boolean statusCheck = db.userStatusCheck(userName,userPassword);
-
-             if(userName.equals("") && userPassword.equals("")){
-                 etUsername.setError("Kérlek add meg a felhasználó neved!");
-                 etPassword.setError("Kérlek add meg a jelszavad!");
-
-             }
-             else if (userName.equals("")){
-                 etUsername.setError("Kérlek add meg a felhasználó neved!");
-             }
-             else if (userPassword.equals("")){
-                 etPassword.setError("Kérlek add meg a jelszavad!");
-             }else{
-                if (userCheck){
-                    switch (permCheck){
-                        case 1:
-                            if (statusCheck){
-                                Intent adminBelep = new Intent(Login.this, AdminMenu.class);
-                                startActivity(adminBelep);
-                                finish();
-                            }else{
-                                Toast.makeText(Login.this, "Inaktív admin profil", Toast.LENGTH_SHORT).show();
-                            }break;
-                        case 2:
-                            if (statusCheck){
-                                Intent hrBelep = new Intent(Login.this, HRMenu.class);
-                                startActivity(hrBelep);
-                                finish();
-                            }else{
-                                Toast.makeText(Login.this, "Inaktív HR profil", Toast.LENGTH_SHORT).show();
-                            }break;
-                        case 3:
-                            if (statusCheck){
-                                Intent facilitesBelep = new Intent(Login.this, FacilitiesMenu.class);
-                                startActivity(facilitesBelep);
-                                finish();
-                            }else{
-                                Toast.makeText(Login.this, "Inaktív Facilities profil!", Toast.LENGTH_SHORT).show();
-                            }break;
-                        case 4:
-                            if (statusCheck){
-                                Intent employeeBelep = new Intent(Login.this, EmployeeMenu.class);
-                                startActivity(employeeBelep);
-                                finish();
-                            }else{
-                                Toast.makeText(Login.this, "Inaktív Employee profil!", Toast.LENGTH_SHORT).show();
-                            }break;
-                        default:
-                            Toast.makeText(Login.this, "Státusz hiba!", Toast.LENGTH_SHORT).show();
-                    }
-                } else if (userCheck==false && userName.equals("admin") && userPassword.equals("admin1234")){
-                    Boolean crateAdmin = db.insertAdmin();
-                    Boolean createPerm = db.createPermissions();
-                    if (crateAdmin && createPerm)
-                    {
-                        if (statusCheck){
-                            Intent adminBelep = new Intent(Login.this, AdminMenu.class);
-                            startActivity(adminBelep);
-                            finish();
-                        }else{
-                            Toast.makeText(Login.this, "Profilod inaktív, lépj kapcsolatba az adminisztrátorral!", Toast.LENGTH_SHORT).show();
-                        }
-                    }else {
-                        Toast.makeText(Login.this, "Hiba az admin profil létrehozásában!", Toast.LENGTH_SHORT).show();
-                    }
-                } else{
-                    Toast.makeText(Login.this, "Hibás felhasználónév vagy jelszó!", Toast.LENGTH_SHORT).show();
-                }
-            }
+                logIn(); //Bejelentkezés
             }
         });
 
     }
 
-    //Inicializálás
     public void init(){
         db = new Database(this);
         etUsername = (EditText) findViewById(R.id.etUsername);
         etPassword = (EditText) findViewById(R.id.etPassword);
         btLogin = (Button) findViewById(R.id.btLogin);
+    }
+
+    public void adminCreation(){
+        String userName = "admin";
+
+        Boolean adminCheck = db.userNameCheck(userName);
+        if(adminCheck){}
+            else{
+                Boolean crateAdmin = db.insertAdmin();
+                if((crateAdmin)){}
+                 else Toast.makeText(this, "Hiba az admin user betöltésekor!", Toast.LENGTH_SHORT).show();
+            }
+    }
+
+    public void permissionCreation(){
+        Boolean permCheck = db.permissionCheck();
+
+        if (permCheck){}
+            else{
+                Boolean createPerm = db.createPermissions();
+                if (createPerm){}
+                else Toast.makeText(this, "Hiba a jogosultságok betöltésekor! ", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public void logIn(){
+        String userName = etUsername.getText().toString();
+        String userPassword = etPassword.getText().toString();
+
+        Boolean userCheck = db.userCheck(userName,userPassword);
+        Integer permCheck = db.userPermissionCheck(userName,userPassword);
+        Boolean statusCheck = db.userStatusCheck(userName,userPassword);
+
+        if(userName.equals("") && userPassword.equals("")){
+            etUsername.setError("Kérlek add meg a felhasználó neved!");
+            etPassword.setError("Kérlek add meg a jelszavad!");
+
+        }
+        else if (userName.equals("")){
+            etUsername.setError("Kérlek add meg a felhasználó neved!");
+        }
+        else if (userPassword.equals("")){
+            etPassword.setError("Kérlek add meg a jelszavad!");
+        }else{
+            if (userCheck){
+                switch (permCheck){
+                    case 1:
+                        if (statusCheck){
+                            startActivity(new Intent(Login.this, AdminMenu.class));
+                            finish();
+                        }else{
+                            Toast.makeText(Login.this, "Inaktív admin profil", Toast.LENGTH_SHORT).show();
+                        }break;
+                    case 2:
+                        if (statusCheck){
+                            startActivity(new Intent(Login.this, HRMenu.class));
+                            finish();
+                        }else{
+                            Toast.makeText(Login.this, "Inaktív HR profil", Toast.LENGTH_SHORT).show();
+                        }break;
+                    case 3:
+                        if (statusCheck){
+                            startActivity(new Intent(Login.this, FacilitiesMenu.class));
+                            finish();
+                        }else{
+                            Toast.makeText(Login.this, "Inaktív Facilities profil!", Toast.LENGTH_SHORT).show();
+                        }break;
+                    case 4:
+                        if (statusCheck){
+                            startActivity(new Intent(Login.this, EmployeeMenu.class));
+                            finish();
+                        }else{
+                            Toast.makeText(Login.this, "Inaktív Employee profil!", Toast.LENGTH_SHORT).show();
+                        }break;
+                    default:
+                        Toast.makeText(Login.this, "Státusz hiba!", Toast.LENGTH_SHORT).show();
+                }
+            } else Toast.makeText(Login.this, "Hibás felhasználónév vagy jelszó!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     //Vissza gomb megnyomásakor dialog box használata
@@ -135,6 +143,7 @@ public class Login extends AppCompatActivity{
             public void onClick(DialogInterface dialogInterface, int i) {
                 finish();
                 System.exit(0);
+
             }
         });
         builder.show();

@@ -1,10 +1,12 @@
 package com.example.gergo.companyx;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -164,6 +166,31 @@ public class UserAdd extends AppCompatActivity {
         db = new Database(this);
     }
 
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserAdd.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kilépés");
+        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+                System.exit(0);
+            }
+        });
+        builder.show();
+    }
+
+
     /*public void progressDialog(){
         progress = new ProgressDialog(UserAdd.this);
         progress.setMax(100);
@@ -191,15 +218,16 @@ public class UserAdd extends AppCompatActivity {
 
     }*/
 
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            progress.incrementProgressBy(1);
-        }
-    };
-
     class Task1 extends AsyncTask<Void, Void, String> {
+
+        Handler handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                progress.incrementProgressBy(1);
+            }
+        };
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();

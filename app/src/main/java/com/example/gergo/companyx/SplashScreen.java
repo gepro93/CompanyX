@@ -26,7 +26,12 @@ public class SplashScreen extends AppCompatActivity {
         progressBar.setMax(100);
 
         progressBarAnimation();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 
     public void init(){

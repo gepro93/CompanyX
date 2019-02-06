@@ -1,7 +1,9 @@
 package com.example.gergo.companyx;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -47,4 +49,29 @@ public class UserList extends AppCompatActivity {
         lwUserList = (ListView) findViewById(R.id.lwUserList);
         btUserListBack = (Button) findViewById(R.id.btUserListBack);
     }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserList.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kilépés");
+        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+                System.exit(0);
+            }
+        });
+        builder.show();
+    }
+
 }

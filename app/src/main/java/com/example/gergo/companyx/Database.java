@@ -523,223 +523,238 @@ public class Database extends SQLiteOpenHelper{
         }
     }
 
-    //Felhasználó létezésének ellenőzése belépéshez
-    public Boolean userCheck(String userName, String userPassword){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE felhNeve=? AND felhJelszo=?", new String[]{userName,userPassword});
 
-        if(cursor.getCount()>0){
-            return true;
-        }else return false;
-    }
+    /*
+    * FELHASZNÁLÓVAL KAPCSOLATOS ADATBÁZIS PARANCSOK
+    * */
 
-    //Felhasználó nevének ellenőzése belépéshez
-    public Boolean userNameCheck(String userName){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE felhNeve=?", new String[]{userName});
+        //Felhasználó létezésének ellenőzése belépéshez
+        public Boolean userCheck(String userName, String userPassword){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE felhNeve=? AND felhJelszo=?", new String[]{userName,userPassword});
 
-        if(cursor.getCount()>0){
-            return true;
-        }else return false;
-    }
-
-    //Felhasználó jogsosultságánnak ellenőzése belépéshez
-    public Integer userPermissionCheck(String userName, String userPassword){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Integer jogosultsagID = 0;
-        Cursor cursor = db.rawQuery("SELECT jogosultsag_id FROM " + USER_TABLE + " WHERE felhNeve=? AND felhJelszo=?", new String[]{userName,userPassword});
-
-        if (cursor!=null && cursor.getCount()>0) {
-            cursor.moveToFirst();
-            jogosultsagID = cursor.getInt(cursor.getColumnIndex("jogosultsag_id"));
+            if(cursor.getCount()>0){
+                return true;
+            }else return false;
         }
-        return jogosultsagID;
-    }
 
-    //Felhasználó státuszának ellenőzése belépéshez
-    public Boolean userStatusCheck(String userName, String userPassword){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT felhStatusz FROM " + USER_TABLE + " WHERE felhNeve=? AND felhJelszo=?", new String[]{userName,userPassword});
+        //Felhasználó nevének ellenőzése belépéshez
+        public Boolean userNameCheck(String userName){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE felhNeve=?", new String[]{userName});
 
-        if(cursor.getCount()>0){
-            return true;
-        }else return false;
-
-        /*if (cursor!=null && cursor.getCount()>0) {
-            cursor.moveToFirst();
-            status = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex("felhStatusz")));
+            if(cursor.getCount()>0){
+                return true;
+            }else return false;
         }
-        return status;*/
-    }
 
-    /*public Cursor viewUsers(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT u."+ USER_NAME + ", p."+ PERMISSION_NAME +", u." + USER_STATUS +
-                        " FROM " + USER_TABLE + " AS u" +
-                        " LEFT JOIN " + PERMISSION_TABLE + " AS p ON u." + USER_PERMISSION_ID + " = p."+ PERMISSION_ID;
-        Cursor cursor = db.rawQuery(query,null);
+        //Felhasználó jogsosultságánnak ellenőzése belépéshez
+        public Integer userPermissionCheck(String userName, String userPassword){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Integer jogosultsagID = 0;
+            Cursor cursor = db.rawQuery("SELECT jogosultsag_id FROM " + USER_TABLE + " WHERE felhNeve=? AND felhJelszo=?", new String[]{userName,userPassword});
 
-        return cursor;
-    }*/
-
-
-    //Felhasználók feltöltése listába
-    public ArrayList<HashMap<String,String>> viewUsers(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ArrayList<HashMap<String,String>> userList = new ArrayList<>();
-
-        String query = "SELECT u."+ USER_NAME + ", p."+ PERMISSION_NAME +", u." + USER_STATUS +
-                " FROM " + USER_TABLE + " AS u" +
-                " LEFT JOIN " + PERMISSION_TABLE + " AS p ON u." + USER_PERMISSION_ID + " = p."+ PERMISSION_ID;
-
-        Cursor cursor = db.rawQuery(query,null);
-
-        while(cursor.moveToNext()){
-            HashMap<String,String> user = new HashMap<>();
-            user.put("USER_NAME",cursor.getString(cursor.getColumnIndex(USER_NAME)));
-            user.put("PERMISSION_NAME",cursor.getString(cursor.getColumnIndex(PERMISSION_NAME)));
-
-            user.put("USER_STATUS", cursor.getString(cursor.getColumnIndex(USER_STATUS)));
-                switch (cursor.getInt(cursor.getColumnIndex(USER_STATUS))){
-                    case 0:
-                        user.put("USER_STATUS","Inaktív");
-                        break;
-
-                    case 1:
-                        user.put("USER_STATUS","Aktív");
-                        break;
-                    default: user.put("USER_STATUS","Nincs");
-                    break;
+            if (cursor!=null && cursor.getCount()>0) {
+                cursor.moveToFirst();
+                jogosultsagID = cursor.getInt(cursor.getColumnIndex("jogosultsag_id"));
             }
-
-            userList.add(user);
+            return jogosultsagID;
         }
-        return userList;
-    }
 
+        //Felhasználó státuszának ellenőzése belépéshez
+        public Boolean userStatusCheck(String userName, String userPassword){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT felhStatusz FROM " + USER_TABLE + " WHERE felhNeve=? AND felhJelszo=?", new String[]{userName,userPassword});
 
-    //Felhasználó jogosultságának kiírása
-    public Boolean getUserPermission(String jogosultsagID){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery
-                ("SELECT jogosultsagNeve " +
-                        "FROM " + USER_TABLE + " as u " +
-                        "LEFT JOIN "+ PERMISSION_TABLE + " as p ON u.jogosultsag_id = p.jogosultsag_id " +
-                        "WHERE jogosultsag_id=?", new String[]{jogosultsagID});
+            if(cursor.getCount()>0){
+                return true;
+            }else return false;
 
-        if(cursor.getCount()>0){
-            return true;
-        }else return false;
-    }
-
-
-    //Admin létrehozása
-    protected boolean insertAdmin(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-        String adminUserName = "admin";
-        String adminPassword = "admin1234";
-        Boolean adminStatus = true;
-        Integer adminPermission = 1;
-
-        contentValues.put(USER_NAME, adminUserName);
-        contentValues.put(USER_PASSWORD, adminPassword);
-        contentValues.put(USER_STATUS, adminStatus);
-        contentValues.put(USER_PERMISSION_ID, adminPermission);
-
-        long eredmeny = db.insert(USER_TABLE, null, contentValues);
-
-        if(eredmeny == -1){
-            return false;
-        }else{
-            return true;
+            /*if (cursor!=null && cursor.getCount()>0) {
+                cursor.moveToFirst();
+                status = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex("felhStatusz")));
+            }
+            return status;*/
         }
-    }
 
-    //Admin jogosultság létrehozása
-    protected boolean createPermissions(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentAdmin = new ContentValues();
-        ContentValues contentHr = new ContentValues();
-        ContentValues contentFacilities = new ContentValues();
-        ContentValues contentEmployee = new ContentValues();
+        /*public Cursor viewUsers(){
+            SQLiteDatabase db = this.getReadableDatabase();
+            String query = "SELECT u."+ USER_NAME + ", p."+ PERMISSION_NAME +", u." + USER_STATUS +
+                            " FROM " + USER_TABLE + " AS u" +
+                            " LEFT JOIN " + PERMISSION_TABLE + " AS p ON u." + USER_PERMISSION_ID + " = p."+ PERMISSION_ID;
+            Cursor cursor = db.rawQuery(query,null);
 
-        String adminPerm = "Admin";
-        String hrPerm = "HR";
-        String facilitiesPerm = "Beszerzés";
-        String employeePerm = "Dolgozó";
+            return cursor;
+        }*/
 
-        contentAdmin.put(PERMISSION_NAME, adminPerm);
-        contentHr.put(PERMISSION_NAME, hrPerm);
-        contentFacilities.put(PERMISSION_NAME, facilitiesPerm);
-        contentEmployee.put(PERMISSION_NAME, employeePerm);
 
-        long resultAdmin = db.insert(PERMISSION_TABLE, null, contentAdmin);
-        long resultHr = db.insert(PERMISSION_TABLE, null, contentHr);
-        long resultFacilities = db.insert(PERMISSION_TABLE, null, contentFacilities);
-        long resultEmployee = db.insert(PERMISSION_TABLE, null, contentEmployee);
+        //Felhasználók feltöltése listába
+        public ArrayList<HashMap<String,String>> viewUsers(){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ArrayList<HashMap<String,String>> userList = new ArrayList<>();
 
-        if(resultAdmin == -1 || resultHr == -1 || resultFacilities == -1 || resultEmployee == -1){
-            return false;
-        }else{
-            return true;
+            String query = "SELECT u."+ USER_NAME + ", p."+ PERMISSION_NAME +", u." + USER_STATUS +
+                    " FROM " + USER_TABLE + " AS u" +
+                    " LEFT JOIN " + PERMISSION_TABLE + " AS p ON u." + USER_PERMISSION_ID + " = p."+ PERMISSION_ID;
+
+            Cursor cursor = db.rawQuery(query,null);
+
+            while(cursor.moveToNext()){
+                HashMap<String,String> user = new HashMap<>();
+                user.put("USER_NAME",cursor.getString(cursor.getColumnIndex(USER_NAME)));
+                user.put("PERMISSION_NAME",cursor.getString(cursor.getColumnIndex(PERMISSION_NAME)));
+
+                user.put("USER_STATUS", cursor.getString(cursor.getColumnIndex(USER_STATUS)));
+                    switch (cursor.getInt(cursor.getColumnIndex(USER_STATUS))){
+                        case 0:
+                            user.put("USER_STATUS","Inaktív");
+                            break;
+
+                        case 1:
+                            user.put("USER_STATUS","Aktív");
+                            break;
+                        default: user.put("USER_STATUS","Nincs");
+                        break;
+                }
+
+                userList.add(user);
+            }
+            return userList;
         }
-    }
 
-    //Jogosultság ellenőrzése
-    public Boolean permissionCheck(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + PERMISSION_TABLE + " WHERE jogosultsag_id=1 AND jogosultsag_id=2 AND jogosultsag_id=3 AND jogosultsag_id=4", null);
 
-        if(cursor.getCount()>0){
-            return true;
-        }else return false;
-    }
+        //Felhasználó jogosultságának kiírása
+        public Boolean getUserPermission(String jogosultsagID){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery
+                    ("SELECT jogosultsagNeve " +
+                            "FROM " + USER_TABLE + " as u " +
+                            "LEFT JOIN "+ PERMISSION_TABLE + " as p ON u.jogosultsag_id = p.jogosultsag_id " +
+                            "WHERE jogosultsag_id=?", new String[]{jogosultsagID});
 
-    //Felhasználó törlése
-    public Boolean UserDelete(String userName){
-        SQLiteDatabase db = this.getWritableDatabase();
-        return  db.delete(USER_TABLE,USER_NAME + "="+'"'+userName+'"',null) > 0;
-    }
-
-    //Felhasználó módosítása
-    public Boolean userModify(String oldUserName,String userName, String userPassword, Boolean userStatus, Integer userPermission){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(USER_NAME, userName);
-        contentValues.put(USER_PASSWORD, userPassword);
-        contentValues.put(USER_STATUS, userStatus);
-        contentValues.put(USER_PERMISSION_ID, userPermission);
-
-        int i = db.update(USER_TABLE, contentValues, USER_NAME + "=" + '"'+oldUserName+'"',null);
-        return i > 0;
-    }
-
-    //Felhasználó módosítása jelszó nélkül
-    public Boolean userModifyWithoutPassword(String oldUserName, String userName, Boolean userStatus, Integer userPermission){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(USER_NAME, userName);
-        contentValues.put(USER_STATUS, userStatus);
-        contentValues.put(USER_PERMISSION_ID, userPermission);
-
-        int i = db.update(USER_TABLE, contentValues, USER_NAME + "=" + '"'+oldUserName+'"',null);
-        return i > 0;
-    }
-
-    //Felhasználónév ellenőrzése módosításkor
-    public Integer userNameCheckForModify(String username){
-        Integer userCount=0;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor eredmeny = db.rawQuery("SELECT COUNT("+USER_NAME+") FROM " + USER_TABLE + " WHERE felhNeve='" + username +"'", null);
-        if (eredmeny!=null && eredmeny.getCount()>0) {
-            eredmeny.moveToFirst();
-            userCount = eredmeny.getInt(eredmeny.getColumnIndex("USER_NAME"));
+            if(cursor.getCount()>0){
+                return true;
+            }else return false;
         }
-        return userCount;
-    }
+
+        //Felhasználó törlése
+        public Boolean UserDelete(String userName){
+            SQLiteDatabase db = this.getWritableDatabase();
+            return  db.delete(USER_TABLE,USER_NAME + "="+'"'+userName+'"',null) > 0;
+        }
+
+        //Felhasználó módosítása
+        public Boolean userModify(String oldUserName,String userName, String userPassword, Boolean userStatus, Integer userPermission){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(USER_NAME, userName);
+            contentValues.put(USER_PASSWORD, userPassword);
+            contentValues.put(USER_STATUS, userStatus);
+            contentValues.put(USER_PERMISSION_ID, userPermission);
+
+            int i = db.update(USER_TABLE, contentValues, USER_NAME + "=" + '"'+oldUserName+'"',null);
+            return i > 0;
+        }
+
+        //Felhasználó módosítása jelszó nélkül
+        public Boolean userModifyWithoutPassword(String oldUserName, String userName, Boolean userStatus, Integer userPermission){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(USER_NAME, userName);
+            contentValues.put(USER_STATUS, userStatus);
+            contentValues.put(USER_PERMISSION_ID, userPermission);
+
+            int i = db.update(USER_TABLE, contentValues, USER_NAME + "=" + '"'+oldUserName+'"',null);
+            return i > 0;
+        }
+
+        //Felhasználónév létezésének ellenőrzése -- darabszám
+        public Integer userNameCheckForModify(String username){
+            Integer userCount=0;
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor eredmeny = db.rawQuery("SELECT COUNT("+USER_NAME+") AS eredmeny FROM " + USER_TABLE + " WHERE felhNeve='" + username +"'", null);
+            if (eredmeny!=null && eredmeny.getCount()>0) {
+                eredmeny.moveToFirst();
+                userCount = eredmeny.getInt(eredmeny.getColumnIndex("eredmeny"));
+            }
+            return userCount;
+        }
+
+        //Admin létrehozása
+        protected boolean insertAdmin(){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            String adminUserName = "admin";
+            String adminPassword = "admin1234";
+            Boolean adminStatus = true;
+            Integer adminPermission = 1;
+
+            contentValues.put(USER_NAME, adminUserName);
+            contentValues.put(USER_PASSWORD, adminPassword);
+            contentValues.put(USER_STATUS, adminStatus);
+            contentValues.put(USER_PERMISSION_ID, adminPermission);
+
+            long eredmeny = db.insert(USER_TABLE, null, contentValues);
+
+            if(eredmeny == -1){
+                return false;
+            }else{
+                return true;
+            }
+        }
+
+
+    /*
+    * JOGOSULTSÁGGAL KAPCSOLATOS ADATBÁZIS PARANCSOK
+    * */
+
+        //Jogosultságok létrehozása
+        protected boolean createPermissions(){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentAdmin = new ContentValues();
+            ContentValues contentHr = new ContentValues();
+            ContentValues contentFacilities = new ContentValues();
+            ContentValues contentEmployee = new ContentValues();
+            ContentValues contentSuperUser = new ContentValues();
+
+            String adminPerm = "Admin";
+            String hrPerm = "HR";
+            String facilitiesPerm = "Beszerzés";
+            String employeePerm = "Dolgozó";
+            String superUser = "Super User";
+
+            contentAdmin.put(PERMISSION_NAME, adminPerm);
+            contentHr.put(PERMISSION_NAME, hrPerm);
+            contentFacilities.put(PERMISSION_NAME, facilitiesPerm);
+            contentEmployee.put(PERMISSION_NAME, employeePerm);
+            contentSuperUser.put(PERMISSION_NAME, superUser);
+
+            long resultAdmin = db.insert(PERMISSION_TABLE, null, contentAdmin);
+            long resultHr = db.insert(PERMISSION_TABLE, null, contentHr);
+            long resultFacilities = db.insert(PERMISSION_TABLE, null, contentFacilities);
+            long resultEmployee = db.insert(PERMISSION_TABLE, null, contentEmployee);
+            long resultSuperUser = db.insert(PERMISSION_TABLE, null, contentSuperUser);
+
+            if(resultAdmin == -1 || resultHr == -1 || resultFacilities == -1 || resultEmployee == -1 || resultSuperUser == -1){
+                return false;
+            }else{
+                return true;
+            }
+        }
+
+        //Jogosultságok ellenőrzése
+        public Boolean permissionCheck(){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + PERMISSION_TABLE + " WHERE jogosultsag_id=1 AND jogosultsag_id=2 AND jogosultsag_id=3 AND jogosultsag_id=4 AND jogosultsag_id=5", null);
+
+            if(cursor.getCount()>0){
+                return true;
+            }else return false;
+        }
+
+
 
 }
