@@ -14,8 +14,8 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -78,7 +78,7 @@ public class UserDelete extends AppCompatActivity {
         btUserDeleteBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(UserDelete.this,AdminUserMenu.class));
+                startActivity(new Intent(UserDelete.this, UserMenu.class));
                 finish();
             }
         });

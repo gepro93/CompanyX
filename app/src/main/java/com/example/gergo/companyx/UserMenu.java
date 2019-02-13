@@ -8,9 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class AdminUserMenu extends AppCompatActivity {
+public class UserMenu extends AppCompatActivity {
 
-    Button btUserCreate, btUserModify, btUserDelete, btUserList, btUserMenuBack;
+    private Button btUserCreate, btUserModify, btUserDelete, btUserList, btUserMenuBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,10 +18,11 @@ public class AdminUserMenu extends AppCompatActivity {
         setContentView(R.layout.activity_admin_user_menu);
         init();
 
+
         btUserList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AdminUserMenu.this, UserList.class));
+                startActivity(new Intent(UserMenu.this, UserList.class));
                 finish();
             }
         });
@@ -29,7 +30,7 @@ public class AdminUserMenu extends AppCompatActivity {
         btUserMenuBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AdminUserMenu.this, AdminMenu.class));
+                startActivity(new Intent(UserMenu.this, AdminMenu.class));
                 finish();
             }
         });
@@ -37,7 +38,7 @@ public class AdminUserMenu extends AppCompatActivity {
         btUserCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AdminUserMenu.this,UserAdd.class));
+                startActivity(new Intent(UserMenu.this, UserAdd.class));
                 finish();
             }
         });
@@ -45,7 +46,7 @@ public class AdminUserMenu extends AppCompatActivity {
         btUserDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AdminUserMenu.this,UserDelete.class));
+                startActivity(new Intent(UserMenu.this, UserDelete.class));
                 finish();
             }
         });
@@ -53,7 +54,7 @@ public class AdminUserMenu extends AppCompatActivity {
         btUserModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AdminUserMenu.this, UserModifyList.class));
+                startActivity(new Intent(UserMenu.this, UserModifyList.class));
                 finish();
             }
         });
@@ -68,7 +69,7 @@ public class AdminUserMenu extends AppCompatActivity {
     }
 
     public void onBackPressed(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(AdminUserMenu.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserMenu.this);
 
         builder.setCancelable(true);
         builder.setTitle("Kilépés");

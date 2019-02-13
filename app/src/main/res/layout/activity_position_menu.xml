@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Felhasználók kezelése"
+            android:text="Beosztások kezelése"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="30sp"
@@ -41,26 +41,26 @@
             android:text="Létrehozás"
             android:textColor="@drawable/button_text_color2"
             android:textAllCaps="false"
-            android:id="@+id/btUserCreate"
+            android:id="@+id/btPositionCreate"
             android:layout_marginTop="35sp"
             android:layout_marginLeft="40sp"
             android:layout_marginRight="20sp"
             />
 
-            <Button
-                android:background="@drawable/button_v2_background"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:drawableTop="@drawable/menu_button_useredit"
-                android:text="Módosítás"
-                android:textColor="@drawable/button_text_color2"
-                android:textAllCaps="false"
-                android:id="@+id/btUserModify"
-                android:layout_marginTop="35sp"
-                android:layout_marginLeft="20sp"
-                android:layout_marginRight="40sp"
-                />
+        <Button
+            android:background="@drawable/button_v2_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:drawableTop="@drawable/menu_button_useredit"
+            android:text="Módosítás"
+            android:textColor="@drawable/button_text_color2"
+            android:textAllCaps="false"
+            android:id="@+id/btPositionModify"
+            android:layout_marginTop="35sp"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="40sp"
+            />
 
     </LinearLayout>
 
@@ -73,7 +73,7 @@
 
 
         <Button
-            android:id="@+id/btUserDelete"
+            android:id="@+id/btPositionDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40sp"
@@ -87,7 +87,7 @@
             android:textColor="@drawable/button_text_color2" />
 
         <Button
-            android:id="@+id/btUserList"
+            android:id="@+id/btPositionList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
@@ -96,7 +96,7 @@
             android:layout_marginRight="40sp"
             android:background="@drawable/button_v2_background"
             android:drawableTop="@drawable/menu_button_userlist"
-            android:text="Felhasználók"
+            android:text="Beosztások"
             android:textAllCaps="false"
             android:textColor="@drawable/button_text_color2" />
 
@@ -117,7 +117,7 @@
             android:text="Vissza"
             android:textColor="@drawable/button_text_color"
             android:textAllCaps="false"
-            android:id="@+id/btUserMenuBack"
+            android:id="@+id/btPositionMenuBack"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="90sp"

@@ -2,6 +2,7 @@ package com.example.gergo.companyx;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,10 +21,23 @@ public class AdminMenu extends AppCompatActivity {
         setContentView(R.layout.activity_admin_menu);
         init();
 
+        SharedPreferences sp = getSharedPreferences("LoginUserName",MODE_PRIVATE);
+        String LoginUserName = sp.getString("LoginUserName","Nincs adat");
+
+        twlogin.setText("Belejentkezve mint: " + LoginUserName);
+
         btUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AdminMenu.this, AdminUserMenu.class));
+                startActivity(new Intent(AdminMenu.this, UserMenu.class));
+                finish();
+            }
+        });
+
+        btPosition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AdminMenu.this, PositionMenu.class));
                 finish();
             }
         });

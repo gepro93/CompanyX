@@ -8,9 +8,9 @@ import android.widget.TextView;
 
 public class SplashScreen extends AppCompatActivity {
 
-    ImageView iwLogo;
-    TextView twLogo, twPrecentage;
-    ProgressBar progressBar;
+    private ImageView iwLogo;
+    private TextView twLogo, twPrecentage;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserAdd extends AppCompatActivity {
 
@@ -39,7 +41,7 @@ public class UserAdd extends AppCompatActivity {
         init();
 
         //Jogosultság lista létrehozása
-        List<String> permission = new ArrayList<>();
+        final List<String> permission = new ArrayList<>();
         permission.add(0, "Válassz hozzáférést!");
         permission.add("Admin");
         permission.add("HR");
@@ -109,7 +111,7 @@ public class UserAdd extends AppCompatActivity {
         btUserAddBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(UserAdd.this, AdminUserMenu.class));
+                startActivity(new Intent(UserAdd.this, UserMenu.class));
                 finish();
             }
         });
@@ -175,7 +177,11 @@ public class UserAdd extends AppCompatActivity {
         } else if (!userPassword1.equals(userPassword2)) {
             etPassword_add_1.setError("A jelszavaknak meg kell egyezniük!");
             etPassword_add_2.setError("A jelszavaknak meg kell egyezniük!");
-        } else {
+        } else if(!isValidPassword(userPassword1)){
+            etPassword_add_1.setError("A jelszónak tartalmaznia kell kis és nagy betűt,\nmin hossza 6 max hossza 10 karakter!");
+        } else if(!isValidUsername(userName)){
+            etUsername_add.setError("A felhasználónév csak kisbetűs lehet és tartalmaznia kell számot!\nMin 6 Max 8 karakter hosszú lehet!");
+        }else {
             if (!userCheck) {
                 Boolean userCreation = db.insertUser(userName, userPassword1, userStatus, selectedPermisson);
                 if (userCreation) {
@@ -192,6 +198,26 @@ public class UserAdd extends AppCompatActivity {
                 Toast.makeText(UserAdd.this, "Ilyen felhasználó már létezik!", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public static boolean isValidPassword(final String password) {
+        Pattern pattern;
+        Matcher matcher;
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-zA-Z]).{6,10}$";
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
+
+        return matcher.matches();
+    }
+
+    public static boolean isValidUsername(final String username) {
+        Pattern pattern;
+        Matcher matcher;
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z]).{6,8}$";
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(username);
+
+        return matcher.matches();
     }
 
     class Task1 extends AsyncTask<Void, Void, String> {

@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/half_overlay"
-        android:drawable="@drawable/user_edit"
+        android:drawable="@drawable/menu_modify_dark"
         android:width="60dp"
         android:height="60dp"
         />

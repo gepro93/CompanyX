@@ -2,6 +2,7 @@ package com.example.gergo.companyx;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,24 +47,22 @@ public class Login extends AppCompatActivity{
         String userName = "admin";
 
         Boolean adminCheck = db.userNameCheck(userName);
-        if(adminCheck){}
-            else{
-                Boolean crateAdmin = db.insertAdmin();
-                if((crateAdmin)){}
-                 else Toast.makeText(this, "Hiba az admin user betöltésekor!", Toast.LENGTH_SHORT).show();
-            }
+        if(!adminCheck){
+            Boolean crateAdmin = db.insertAdmin();
+            if((crateAdmin)){}
+            else Toast.makeText(this, "Hiba az admin user betöltésekor!", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void permissionCreation(){
         Boolean permCheck = db.permissionCheck();
 
-        if (permCheck){}
-            else{
-                Boolean createPerm = db.createPermissions();
-                if (createPerm){}
-                else Toast.makeText(this, "Hiba a jogosultságok betöltésekor! ", Toast.LENGTH_SHORT).show();
+        if (!permCheck){
+            Boolean createPerm = db.createPermissions();
+            if (createPerm){}
+            else Toast.makeText(this, "Hiba a jogosultságok betöltésekor! ", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public void logIn(){
@@ -73,6 +72,12 @@ public class Login extends AppCompatActivity{
         Boolean userCheck = db.userCheck(userName,userPassword);
         Integer permCheck = db.userPermissionCheck(userName,userPassword);
         Boolean statusCheck = db.userStatusCheck(userName,userPassword);
+
+        SharedPreferences sp = getSharedPreferences("LoginUserName",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("LoginUserName", userName);
+        editor.apply();
+        editor.commit();
 
         if(userName.equals("") && userPassword.equals("")){
             etUsername.setError("Kérlek add meg a felhasználó neved!");

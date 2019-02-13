@@ -135,7 +135,6 @@ public class Database extends SQLiteOpenHelper{
     public static final String TRANSACTION_ITEM_ID = "eszkoz_id";
     public static final String TRANSACTION_EMPLOYEE_ID = "dolgozo_id";
 
-    public String item_table, item_id;
 
 
     @Override
