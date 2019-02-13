@@ -94,7 +94,7 @@ public class UserModify extends AppCompatActivity {
         spPermissionMod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedPermission = adapterView.getSelectedItemPosition();
+                selectedPermission = adapterView.getSelectedItemPosition(); //Kiválasztott jogosultág elmentése egy változóba
             }
 
             @Override
@@ -106,7 +106,7 @@ public class UserModify extends AppCompatActivity {
         spStatusMod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedStatus = adapterView.getSelectedItemPosition();
+                selectedStatus = adapterView.getSelectedItemPosition(); //Kiválasztott státusz elmentése egy változóba
             }
 
             @Override

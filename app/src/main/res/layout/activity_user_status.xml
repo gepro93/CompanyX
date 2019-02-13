@@ -4,32 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserModifyList"
+    tools:context=".UserStatus"
     android:background="@drawable/ic_background"
+    android:weightSum="100"
     android:orientation="vertical"
-    android:weightSum="100">
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0sp"
         android:layout_weight="37.5">
-        >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Felhasználó módosítása"
+            android:text="Felhasználó státusz kezelés"
             android:textColor="@color/colorWhite"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="50sp"
             android:textSize="25sp"
-            android:id="@+id/twUserMod"/>
+            android:layout_centerInParent="true"
+            android:id="@+id/twUserStatus"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:layout_below="@+id/twUserMod"
+            android:layout_below="@+id/twUserStatus"
             android:text="Admin"
             android:layout_centerHorizontal="true"
             android:textColor="@color/colorWhite"
@@ -45,48 +44,28 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/lwUserModify"
+            android:id="@+id/lwUserStatusMod"
             android:choiceMode="singleChoice">
         </ListView>
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0sp"
-        android:layout_weight="12.5"
-        android:orientation="horizontal">
+        android:layout_weight="12.5">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
             android:background="@drawable/button_background"
-            android:drawableLeft="@drawable/menu_modify"
-            android:text="Módosít"
-            android:textAllCaps="false"
             android:textColor="@drawable/button_text_color"
-            android:layout_gravity="center"
-            android:layout_marginRight="20sp"
-            android:layout_marginLeft="40sp"
-            android:id="@+id/btUserMod"
-            />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:background="@drawable/button_background"
-            android:drawableLeft="@drawable/menu_logout"
             android:text="Vissza"
             android:textAllCaps="false"
-            android:textColor="@drawable/button_text_color"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20sp"
-            android:layout_marginRight="40sp"
-            android:id="@+id/btUserModBack"
-            />
+            android:drawableLeft="@drawable/menu_logout"
+            android:layout_centerInParent="true"
+            android:id="@+id/btUserStatusBack"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

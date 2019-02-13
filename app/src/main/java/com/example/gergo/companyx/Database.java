@@ -588,7 +588,7 @@ public class Database extends SQLiteOpenHelper{
         }*/
 
 
-        //Felhasználók feltöltése listába
+        //Felhasználók adatainak feltöltése listába
         public ArrayList<HashMap<String,String>> viewUsers(){
             SQLiteDatabase db = this.getWritableDatabase();
             ArrayList<HashMap<String,String>> userList = new ArrayList<>();
@@ -621,6 +621,56 @@ public class Database extends SQLiteOpenHelper{
             }
             return userList;
         }
+
+
+    //Felhasználók nevei feltöltése listába
+    public ArrayList<String> viewUsersByName(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<String> userList = new ArrayList<>();
+
+        String query = "SELECT "+ USER_NAME + " AS felhNeve" +
+                " FROM " + USER_TABLE;
+
+        Cursor cursor = db.rawQuery(query,null);
+
+        while(cursor.moveToNext()){
+            userList.add(cursor.getString(cursor.getColumnIndex("felhNeve")));
+        }
+        return userList;
+    }
+
+    //Felhasználók státuszai feltöltése listába
+    public ArrayList<String> viewUsersByStatus(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<String> userList = new ArrayList<>();
+
+        String query = "SELECT "+ USER_STATUS + " AS felhStatusz" +
+                " FROM " + USER_TABLE;
+
+        Cursor cursor = db.rawQuery(query,null);
+
+        while(cursor.moveToNext()){
+            userList.add(cursor.getString(cursor.getColumnIndex("felhStatusz")));
+        }
+        return userList;
+    }
+
+    //Felhasználók jogosultságai feltöltése listába
+    public ArrayList<String> viewUsersByPerm(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<String> userList = new ArrayList<>();
+
+        String query = "SELECT "+ PERMISSION_NAME + " AS jogosultsagNeve" +
+                " FROM " + USER_TABLE + " AS u" +
+                " LEFT JOIN " + PERMISSION_TABLE + " AS p ON u." + USER_PERMISSION_ID + " = p."+ PERMISSION_ID;
+
+        Cursor cursor = db.rawQuery(query,null);
+
+        while(cursor.moveToNext()){
+            userList.add(cursor.getString(cursor.getColumnIndex("jogosultsagNeve")));
+        }
+        return userList;
+    }
 
 
         //Felhasználó jogosultságának kiírása

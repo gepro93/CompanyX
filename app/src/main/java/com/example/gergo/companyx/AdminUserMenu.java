@@ -10,7 +10,7 @@ import android.widget.Button;
 
 public class AdminUserMenu extends AppCompatActivity {
 
-    Button btUserCreate, btUserModify, btUserDelete, btUserStatus, btUserList, btUserMenuBack;
+    Button btUserCreate, btUserModify, btUserDelete, btUserList, btUserMenuBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,6 @@ public class AdminUserMenu extends AppCompatActivity {
         btUserCreate = (Button) findViewById(R.id.btUserCreate);
         btUserModify = (Button) findViewById(R.id.btUserModify);
         btUserDelete = (Button) findViewById(R.id.btUserDelete);
-        btUserStatus = (Button) findViewById(R.id.btUserStatus);
         btUserList = (Button) findViewById(R.id.btUserList);
         btUserMenuBack = (Button) findViewById(R.id.btUserMenuBack);
     }

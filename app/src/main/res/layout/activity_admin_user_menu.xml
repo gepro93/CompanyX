@@ -6,20 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".AdminUserMenu"
     android:orientation="vertical"
-    android:weightSum="1000"
+    android:weightSum="100"
     android:background="@drawable/ic_background">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0sp"
-        android:layout_weight="180">
+        android:layout_weight="23">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Felhasználók kezelése"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_centerInParent="true"
+            android:layout_marginBottom="30sp"
             android:textSize="25sp"
             android:textColor="@color/colorWhite"/>
 
@@ -30,14 +31,15 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             android:textSize="15sp"
-            android:textColor="@color/colorWhite"/>
+            android:textColor="@color/colorWhite"
+            android:layout_marginBottom="5sp"/>
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0sp"
-        android:layout_weight="220"
+        android:layout_weight="22"
         android:orientation="horizontal">
 
         <Button
@@ -55,20 +57,20 @@
             android:layout_marginRight="20sp"
             />
 
-        <Button
-            android:background="@drawable/button_v2_background"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:drawableTop="@drawable/menu_button_userperm"
-            android:layout_marginTop="35sp"
-            android:layout_marginRight="40sp"
-            android:layout_marginLeft="20sp"
-            android:text="Státusz"
-            android:textColor="@drawable/button_text_color2"
-            android:textAllCaps="false"
-            android:id="@+id/btUserStatus"
-            />
+            <Button
+                android:background="@drawable/button_v2_background"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:drawableTop="@drawable/menu_button_useredit"
+                android:text="Módosítás"
+                android:textColor="@drawable/button_text_color2"
+                android:textAllCaps="false"
+                android:id="@+id/btUserModify"
+                android:layout_marginTop="35sp"
+                android:layout_marginLeft="20sp"
+                android:layout_marginRight="40sp"
+                />
 
     </LinearLayout>
 
@@ -76,74 +78,62 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0sp"
-        android:layout_weight="220"
+        android:layout_weight="22"
         android:orientation="horizontal">
 
-        <Button
-            android:background="@drawable/button_v2_background"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:drawableTop="@drawable/menu_button_useredit"
-            android:text="Módosítás"
-            android:textColor="@drawable/button_text_color2"
-            android:textAllCaps="false"
-            android:id="@+id/btUserModify"
-            android:layout_marginTop="35sp"
-            android:layout_marginLeft="40sp"
-            android:layout_marginRight="20sp"
-            />
 
         <Button
+            android:id="@+id/btUserDelete"
+            android:layout_width="144dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40sp"
+            android:layout_marginTop="35sp"
+            android:layout_marginRight="20sp"
+            android:layout_weight="0.5"
             android:background="@drawable/button_v2_background"
+            android:drawableTop="@drawable/menu_button_userdelete"
+            android:text="Törlés"
+            android:textAllCaps="false"
+            android:textColor="@drawable/button_text_color2" />
+
+        <Button
+            android:id="@+id/btUserList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:drawableTop="@drawable/menu_button_userdelete"
+            android:layout_marginLeft="20sp"
             android:layout_marginTop="35sp"
             android:layout_marginRight="40sp"
-            android:layout_marginLeft="20sp"
-            android:text="Törlés"
-            android:textColor="@drawable/button_text_color2"
+            android:background="@drawable/button_v2_background"
+            android:drawableTop="@drawable/menu_button_userlist"
+            android:text="Felhasználói lista"
             android:textAllCaps="false"
-            android:id="@+id/btUserDelete"
-            />
+            android:textColor="@drawable/button_text_color2" />
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0sp"
-        android:layout_weight="350"
-        android:orientation="vertical">
+        android:layout_weight="33">
 
-        <Button
-            android:background="@drawable/button_v2_background"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/menu_button_userlist"
-            android:layout_marginTop="25sp"
-            android:layout_gravity="center"
-            android:text="Felhasználói lista"
-            android:textColor="@drawable/button_text_color2"
-            android:textAllCaps="false"
-            android:id="@+id/btUserList"
-            />
+
 
         <Button
             android:background="@drawable/button_background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/menu_logout"
-            android:layout_marginTop="25sp"
-            android:layout_gravity="center"
             android:text="Vissza"
             android:textColor="@drawable/button_text_color"
             android:textAllCaps="false"
             android:id="@+id/btUserMenuBack"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="90sp"
             />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 </LinearLayout>

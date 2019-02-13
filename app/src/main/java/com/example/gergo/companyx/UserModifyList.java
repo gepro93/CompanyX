@@ -23,6 +23,7 @@ public class UserModifyList extends AppCompatActivity {
     private Database db;
     private Button btUserModBack, btUserMod;
     private ListView lwUserModify;
+    private ArrayList<String> userListByName, userListByPerm, userListByStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,10 @@ public class UserModifyList extends AppCompatActivity {
                 new String[]{"USER_NAME","PERMISSION_NAME","USER_STATUS"}, new int[]{R.id.twName, R.id.twPermission, R.id.twStatus});
 
         lwUserModify.setAdapter(adapter);
+
+        userListByName = db.viewUsersByName();
+        userListByPerm = db.viewUsersByPerm();
+        userListByStatus = db.viewUsersByStatus();
 
         lwUserModify.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -55,32 +60,7 @@ public class UserModifyList extends AppCompatActivity {
         btUserMod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-            int pos  = lwUserModify.getCheckedItemPosition();
-
-                if (pos > -1)
-                {
-                    View item = lwUserModify.getChildAt(pos);
-                    TextView twUser = (TextView)item.findViewById(R.id.twName);
-                    TextView twPerm = (TextView)item.findViewById(R.id.twPermission);
-                    TextView twStat = (TextView)item.findViewById(R.id.twStatus);
-                    String userName = twUser.getText().toString();
-                    String userPerm = twPerm.getText().toString();
-                    String userStat = twStat.getText().toString();
-
-                    SharedPreferences sp = getSharedPreferences("UserModify",MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sp.edit();
-
-                    editor.putString("username", userName);
-                    editor.putString("userperm", userPerm);
-                    editor.putString("userstat", userStat);
-
-                    editor.apply();
-                    editor.commit();
-                    startActivity(new Intent(UserModifyList.this, UserModify.class));
-                }else{
-                    Toast.makeText(UserModifyList.this, "Módosításhoz jelölj ki egy elemet!", Toast.LENGTH_SHORT).show();
-                }
+                setUserModify(); //Felhasználó adatainak átadása
             }
         });
 
@@ -91,6 +71,34 @@ public class UserModifyList extends AppCompatActivity {
         btUserModBack = (Button) findViewById(R.id.btUserModBack);
         btUserMod = (Button) findViewById(R.id.btUserMod);
         lwUserModify = (ListView) findViewById(R.id.lwUserModify);
+    }
+
+    public void setUserModify(){
+        int pos  = lwUserModify.getCheckedItemPosition();
+
+        if (pos > -1)
+        {
+            String userName = userListByName.get(pos);
+            String userPerm = userListByPerm.get(pos);
+
+            SharedPreferences sp = getSharedPreferences("UserModify",MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+
+            editor.putString("username", userName);
+            editor.putString("userperm", userPerm);
+            if(userListByStatus.get(pos).equals("1")){
+                editor.putString("userstat", "Aktív");
+            }else editor.putString("userstat", "Inaktív");
+
+
+            editor.apply();
+            editor.commit();
+
+            startActivity(new Intent(UserModifyList.this, UserModify.class));
+            finish();
+        }else{
+            Toast.makeText(UserModifyList.this, "Módosításhoz jelölj ki egy elemet!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onBackPressed(){

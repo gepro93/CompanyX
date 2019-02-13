@@ -26,6 +26,7 @@ public class UserDelete extends AppCompatActivity {
     private ListView lwUserDelete;
     private Button btUserDeleteExec, btUserDeleteBack;
     private ProgressDialog progress;
+    private ArrayList<String> userListByName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class UserDelete extends AppCompatActivity {
 
         lwUserDelete.setAdapter(adapter);
 
+        userListByName = db.viewUsersByName();
 
         lwUserDelete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -66,24 +68,7 @@ public class UserDelete extends AppCompatActivity {
                 builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
                         userDelete(userList,adapter); //Felhasználó törlése
-
-                        /*int pos  = lwUserDelete.getCheckedItemPosition();
-
-                        if (pos > -1)
-                        {
-                            View item = lwUserDelete.getChildAt(pos);
-                            TextView tw = (TextView)item.findViewById(R.id.twName);
-                            String text = tw.getText().toString();
-                            Boolean userDelete = db.UserDelete(text);
-
-                            if (userDelete){
-                                userList.remove(pos);
-                                progressDialog();
-                            }else Toast.makeText(UserDelete.this, "Adatbázis hiba a törléskor!", Toast.LENGTH_SHORT).show();
-                        }
-                        ((SimpleAdapter) adapter).notifyDataSetChanged();*/
                     }
                 });
                 builder.show();
@@ -111,13 +96,12 @@ public class UserDelete extends AppCompatActivity {
 
         if (pos > -1)
         {
-            View item = lwUserDelete.getChildAt(pos);
-            TextView tw = (TextView)item.findViewById(R.id.twName);
-            String text = tw.getText().toString();
+            String text = userListByName.get(pos);
             Boolean userDelete = db.UserDelete(text);
 
             if (userDelete){
                 arrayList.remove(pos);
+                userListByName.remove(pos);
                 progressDialog();
             }else Toast.makeText(UserDelete.this, "Adatbázis hiba a törléskor!", Toast.LENGTH_SHORT).show();
         }

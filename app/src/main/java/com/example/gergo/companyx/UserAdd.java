@@ -102,47 +102,7 @@ public class UserAdd extends AppCompatActivity {
         btUserAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userName = etUsername_add.getText().toString();
-                String userPassword1 = etPassword_add_1.getText().toString();
-                String userPassword2 = etPassword_add_2.getText().toString();
-
-                switch (selectedStatus) {
-                    case 1:
-                        userStatus = true;
-                        break;
-                    case 2:
-                        userStatus = false;
-                        break;
-                    default:
-                        break;
-                }
-
-
-                //Adatbázis lekérdezések
-                Boolean userCheck = db.userNameCheck(userName);
-
-                if (etUsername_add.equals("") || etPassword_add_1.equals("") || etPassword_add_2.equals("") || selectedPermisson == 0 || selectedStatus == 0) {
-                    Toast.makeText(UserAdd.this, "Hoppá, valamit nem töltöttél ki!", Toast.LENGTH_SHORT).show();
-                } else if (!userPassword1.equals(userPassword2)) {
-                    etPassword_add_1.setError("A jelszavaknak meg kell egyezniük!");
-                    etPassword_add_2.setError("A jelszavaknak meg kell egyezniük!");
-                } else {
-                    if (!userCheck) {
-                        Boolean userCreation = db.insertUser(userName, userPassword1, userStatus, selectedPermisson);
-                        if (userCreation) {
-                            new Task1().execute();
-                            etUsername_add.getText().clear();
-                            etPassword_add_1.getText().clear();
-                            etPassword_add_2.getText().clear();
-                            spPermission.setSelection(0);
-                            spStatus.setSelection(0);
-                        } else {
-                            Toast.makeText(UserAdd.this, "Hiba a létrehozáskor!", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(UserAdd.this, "Ilyen felhasználó már létezik!", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                userAdd(); //Felhasználó létrehozása
             }
         });
 
@@ -190,33 +150,49 @@ public class UserAdd extends AppCompatActivity {
         builder.show();
     }
 
+    public void userAdd(){
+        String userName = etUsername_add.getText().toString();
+        String userPassword1 = etPassword_add_1.getText().toString();
+        String userPassword2 = etPassword_add_2.getText().toString();
 
-    /*public void progressDialog(){
-        progress = new ProgressDialog(UserAdd.this);
-        progress.setMax(100);
-        progress.setMessage("Felhasználó létrehozása folyamatban...");
-        progress.setTitle("Létrehozás");
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.show();
+        switch (selectedStatus) {
+            case 1:
+                userStatus = true;
+                break;
+            case 2:
+                userStatus = false;
+                break;
+            default:
+                break;
+        }
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    while(progress.getProgress() <= progress.getMax()){
-                        Thread.sleep(40);
-                        handler.sendMessage(handler.obtainMessage());
-                        if(progress.getProgress() == progress.getMax()){
-                            progress.dismiss();
-                        }
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+
+        //Adatbázis lekérdezések
+        Boolean userCheck = db.userNameCheck(userName);
+
+        if (etUsername_add.equals("") || etPassword_add_1.equals("") || etPassword_add_2.equals("") || selectedPermisson == 0 || selectedStatus == 0) {
+            Toast.makeText(UserAdd.this, "Hoppá, valamit nem töltöttél ki!", Toast.LENGTH_SHORT).show();
+        } else if (!userPassword1.equals(userPassword2)) {
+            etPassword_add_1.setError("A jelszavaknak meg kell egyezniük!");
+            etPassword_add_2.setError("A jelszavaknak meg kell egyezniük!");
+        } else {
+            if (!userCheck) {
+                Boolean userCreation = db.insertUser(userName, userPassword1, userStatus, selectedPermisson);
+                if (userCreation) {
+                    new Task1().execute();
+                    etUsername_add.getText().clear();
+                    etPassword_add_1.getText().clear();
+                    etPassword_add_2.getText().clear();
+                    spPermission.setSelection(0);
+                    spStatus.setSelection(0);
+                } else {
+                    Toast.makeText(UserAdd.this, "Hiba a létrehozáskor!", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Toast.makeText(UserAdd.this, "Ilyen felhasználó már létezik!", Toast.LENGTH_SHORT).show();
             }
-        }).start();
-
-    }*/
+        }
+    }
 
     class Task1 extends AsyncTask<Void, Void, String> {
 
@@ -263,4 +239,31 @@ public class UserAdd extends AppCompatActivity {
         }
 
     }
+
+    /*public void progressDialog(){
+        progress = new ProgressDialog(UserAdd.this);
+        progress.setMax(100);
+        progress.setMessage("Felhasználó létrehozása folyamatban...");
+        progress.setTitle("Létrehozás");
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.show();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    while(progress.getProgress() <= progress.getMax()){
+                        Thread.sleep(40);
+                        handler.sendMessage(handler.obtainMessage());
+                        if(progress.getProgress() == progress.getMax()){
+                            progress.dismiss();
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+    }*/
 }
