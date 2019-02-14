@@ -44,14 +44,14 @@ public class PositionModify extends AppCompatActivity {
         init();
 
         final ArrayList<HashMap<String, String>> positionList = db.viewPositions();
-        final ListAdapter adapter = new SimpleAdapter(PositionModify.this, positionList, R.layout.position_list_row,
+        final ListAdapter adapter = new SimpleAdapter(PositionModify.this, positionList, R.layout.position_modify_row,
                 new String[]{"POSITION_NAME", "GRADE_NAME", "SALARY_MIN_VALUE", "SALARY_MAX_VALUE"},
                 new int[]{R.id.twPositionName, R.id.twPositionGradeName, R.id.twPositionSalaryFrom, R.id.twPositionSalaryTo});
 
         lwPositionModify.setAdapter(adapter);
 
         positionListByName = db.viewPositionsByName();
-        positionListByGrade = db.viewPositionsByGrade();
+        //positionListByGrade = db.viewPositionsByGrade();
 
         lwPositionModify.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

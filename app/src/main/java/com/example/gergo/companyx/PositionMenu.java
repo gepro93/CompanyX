@@ -3,6 +3,7 @@ package com.example.gergo.companyx;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
@@ -43,7 +44,21 @@ public class PositionMenu extends AppCompatActivity {
             }
         });
 
+        btPositionList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PositionMenu.this,PositionList.class));
+                finish();
+            }
+        });
 
+        btPositionModify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PositionMenu.this,PositionModify.class));
+                finish();
+            }
+        });
     }
 
     public void init(){

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ public class PositionList extends AppCompatActivity {
         init();
 
         ArrayList<HashMap<String, String>> positionList = db.viewPositions();
+        Toast.makeText(this, ""+positionList, Toast.LENGTH_SHORT).show();
         ListAdapter adapter = new SimpleAdapter(PositionList.this, positionList, R.layout.position_list_row,
                 new String[]{"POSITION_NAME", "GRADE_NAME", "SALARY_MIN_VALUE", "SALARY_MAX_VALUE"},
                 new int[]{R.id.twPositionName, R.id.twPositionGradeName, R.id.twPositionSalaryFrom, R.id.twPositionSalaryTo});

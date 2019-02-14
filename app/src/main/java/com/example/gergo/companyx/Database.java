@@ -344,7 +344,7 @@ public class Database extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(POSITION_NAME, beosztasNeve);
-        contentValues.put(POSITION_NAME, grade_id);
+        contentValues.put(POSITION_GRADE_ID, grade_id);
 
         long eredmeny = db.insert(POSITION_TABLE, null, contentValues);
 
@@ -739,26 +739,26 @@ public class Database extends SQLiteOpenHelper{
 
         //Admin létrehozása
         protected boolean insertAdmin(){
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues contentValues = new ContentValues();
+                SQLiteDatabase db = this.getWritableDatabase();
+                ContentValues contentValues = new ContentValues();
 
-            String adminUserName = "admin";
-            String adminPassword = "admin1234";
-            Boolean adminStatus = true;
-            int adminPermission = 1;
+                String adminUserName = "admin";
+                String adminPassword = "admin1234";
+                Boolean adminStatus = true;
+                int adminPermission = 1;
 
-            contentValues.put(USER_NAME, adminUserName);
-            contentValues.put(USER_PASSWORD, adminPassword);
-            contentValues.put(USER_STATUS, adminStatus);
-            contentValues.put(USER_PERMISSION_ID, adminPermission);
+                contentValues.put(USER_NAME, adminUserName);
+                contentValues.put(USER_PASSWORD, adminPassword);
+                contentValues.put(USER_STATUS, adminStatus);
+                contentValues.put(USER_PERMISSION_ID, adminPermission);
 
-            long eredmeny = db.insert(USER_TABLE, null, contentValues);
+                long eredmeny = db.insert(USER_TABLE, null, contentValues);
 
-            if(eredmeny == -1){
-                return false;
-            }else{
-                return true;
-            }
+                if(eredmeny == -1){
+                    return false;
+                }else{
+                    return true;
+                }
         }
 
 
@@ -829,9 +829,9 @@ public class Database extends SQLiteOpenHelper{
             SQLiteDatabase db = this.getWritableDatabase();
             ArrayList<HashMap<String,String>> positionList = new ArrayList<>();
 
-            String query = "SELECT u."+ POSITION_NAME + ", p."+ GRADE_NAME + ", u."+ SALARY_MIN_VALUE +" , u."+ SALARY_MAX_VALUE +
+            String query = "SELECT u."+ POSITION_NAME + ", g."+ GRADE_NAME + ", g."+ SALARY_MIN_VALUE +" , g."+ SALARY_MAX_VALUE +
                     " FROM " + POSITION_TABLE + " AS u" +
-                    " LEFT JOIN " + GRADE_TABLE + " AS p ON u." + POSITION_GRADE_ID + " = p."+ GRADE_ID;
+                    " LEFT JOIN " + GRADE_TABLE + " AS g ON u." + POSITION_GRADE_ID + " = g."+ GRADE_ID;
 
             Cursor cursor = db.rawQuery(query,null);
 
@@ -889,6 +889,29 @@ public class Database extends SQLiteOpenHelper{
                 gradeList.add(cursor.getInt(cursor.getColumnIndex("gradeNeve")));
             }
             return gradeList;
+        }
+
+        //Grade létrehozása
+        protected boolean insertGrade(){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            String gradeName = "Manager";
+            int salaryMin = 500;
+            int salaryMax = 1000;
+
+            contentValues.put(GRADE_NAME, gradeName);
+            contentValues.put(SALARY_MIN_VALUE, salaryMin);
+            contentValues.put(SALARY_MAX_VALUE, salaryMax);
+
+
+            long eredmeny = db.insert(GRADE_TABLE, null, contentValues);
+
+            if(eredmeny == -1){
+                return false;
+            }else{
+                return true;
+            }
         }
 
 }
