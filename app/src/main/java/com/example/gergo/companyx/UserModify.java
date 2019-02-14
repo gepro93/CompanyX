@@ -27,7 +27,7 @@ public class UserModify extends AppCompatActivity {
     private EditText etUsernameMod, etPasswordMod1, etPasswordMod2;
     private Spinner spPermissionMod, spStatusMod;
     private Button btUserModifyExecute, btUserModifyBack;
-    public static Integer selectedPermission, selectedStatus;
+    private int selectedPermission, selectedStatus;
     private Database db;
     private TextView twUserName;
     private ProgressDialog progress;

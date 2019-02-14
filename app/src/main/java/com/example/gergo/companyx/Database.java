@@ -52,6 +52,7 @@ public class Database extends SQLiteOpenHelper{
 
     public static final String POSITION_ID = "beosztas_id";
     public static final String POSITION_NAME = "beosztasNeve";
+    public static final String POSITION_GRADE_ID = "grade_id";
 
     //osztályok tábla és oszlopok definiálása
     public static final String DEPARTMENT_TABLE = "osztalyok";
@@ -111,6 +112,7 @@ public class Database extends SQLiteOpenHelper{
     public static final String GRADE_TABLE = "gradek";
 
     public static final String GRADE_ID = "grade_id";
+    public static final String GRADE_NAME = "grade_name";
     public static final String SALARY_MIN_VALUE = "fizetesAlsoErtek";
     public static final String SALARY_MAX_VALUE = "fizetesFelsoErtek";
 
@@ -173,7 +175,9 @@ public class Database extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL("CREATE TABLE "
                 + POSITION_TABLE + " ("
                 + POSITION_ID + " integer primary key autoincrement, "
-                + POSITION_NAME + " text not null)");
+                + POSITION_NAME + " text not null, "
+                + POSITION_GRADE_ID + " integer not null, "
+                + " FOREIGN KEY ("+POSITION_GRADE_ID+") REFERENCES "+GRADE_TABLE+"("+GRADE_ID+"))");
 
         sqLiteDatabase.execSQL("CREATE TABLE "
                 + DEPARTMENT_TABLE + " ("
@@ -230,6 +234,7 @@ public class Database extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL("CREATE TABLE "
                 + GRADE_TABLE + " ("
                 + GRADE_ID + " integer primary key autoincrement, "
+                + GRADE_NAME + " text not null, "
                 + SALARY_MIN_VALUE + " integer not null,"
                 + SALARY_MAX_VALUE + " integer not null)");
 
@@ -277,7 +282,7 @@ public class Database extends SQLiteOpenHelper{
     }
 
     //Felhasználó felvétel
-    public boolean insertUser(String felhNeve, String felhJelszo, Boolean felhStatusz, Integer jogosultsag_id){
+    public boolean insertUser(String felhNeve, String felhJelszo, Boolean felhStatusz, int jogosultsag_id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_NAME, felhNeve);
@@ -296,7 +301,7 @@ public class Database extends SQLiteOpenHelper{
 
     //Dolgozó felvétel
     public boolean insertEmployee(String dolgNev, String dolgNeme, Date dolgSzuletesiDatum, String dolgAnyjaNeve,
-                                  Integer dolgStatusz, Boolean dolgFizetes, Integer osztaly_id, Integer beosztas_id, Integer felh_id){
+                                  int dolgStatusz, Boolean dolgFizetes, int osztaly_id, int beosztas_id, int felh_id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(EMPLOYEE_NAME, dolgNev);
@@ -335,10 +340,11 @@ public class Database extends SQLiteOpenHelper{
 
 
     //Beosztás felvétel
-    public boolean insertPosition(String beosztasNeve){
+    public boolean insertPosition(String beosztasNeve, int grade_id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(POSITION_NAME, beosztasNeve);
+        contentValues.put(POSITION_NAME, grade_id);
 
         long eredmeny = db.insert(POSITION_TABLE, null, contentValues);
 
@@ -365,7 +371,7 @@ public class Database extends SQLiteOpenHelper{
     }
 
     //Autó felvétel
-    public boolean insertCar(String autoRendszam, String autoAlvazszam, Date autoMuszakierveny, String autoGyartmany_id, Integer grade_id){
+    public boolean insertCar(String autoRendszam, String autoAlvazszam, Date autoMuszakierveny, String autoGyartmany_id, int grade_id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(CAR_LICENSENUMBER, autoRendszam);
@@ -400,7 +406,7 @@ public class Database extends SQLiteOpenHelper{
     }
 
     //Mobil felvétel
-    public boolean insertMobile(String mobilImeiSzam, Integer mobilGyartmany_id, Integer grade_id){
+    public boolean insertMobile(String mobilImeiSzam, int mobilGyartmany_id, int grade_id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(MOBIL_IMEINUMBER, mobilImeiSzam);
@@ -433,7 +439,7 @@ public class Database extends SQLiteOpenHelper{
     }
 
     //Laptop felvétel
-    public boolean insertLaptop(String laptopImeiSzam, Integer laptopGyartmany_id, Integer grade_id){
+    public boolean insertLaptop(String laptopImeiSzam, int laptopGyartmany_id, int grade_id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(LAPTOP_IMEINUMBER, laptopImeiSzam);
@@ -466,7 +472,7 @@ public class Database extends SQLiteOpenHelper{
     }
 
     //Grade felvétel
-    public boolean insertGrade(Integer fizetesAlsoErtek, Integer fizetesFelsoErtek){
+    public boolean insertGrade(int fizetesAlsoErtek, int fizetesFelsoErtek){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(SALARY_MIN_VALUE, fizetesAlsoErtek);
@@ -482,8 +488,8 @@ public class Database extends SQLiteOpenHelper{
     }
 
     //Út felvétel
-    public boolean insertTrip(String gpsIndulas, String gpsErkezes, Integer kmIndulas, Integer kmErkezes,
-                                  Date rogzitesIdo, Integer dolgozo_id, Integer auto_id){
+    public boolean insertTrip(String gpsIndulas, String gpsErkezes, int kmIndulas, int kmErkezes,
+                                  Date rogzitesIdo, int dolgozo_id, int auto_id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TRIP_GPS_START, gpsIndulas);
@@ -505,7 +511,7 @@ public class Database extends SQLiteOpenHelper{
 
     //Tranzakció felvétel
     public boolean insertTransaction(Boolean tranzakcioTipus, String eszkozNeve,
-                                     Integer eszkoz_id, Integer dolgozo_id){
+                                     int eszkoz_id, int dolgozo_id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TRANSACTION_TYPE, tranzakcioTipus);
@@ -550,7 +556,7 @@ public class Database extends SQLiteOpenHelper{
         //Felhasználó jogsosultságánnak ellenőzése belépéshez
         public Integer userPermissionCheck(String userName, String userPassword){
             SQLiteDatabase db = this.getReadableDatabase();
-            Integer jogosultsagID = 0;
+            int jogosultsagID = 0;
             Cursor cursor = db.rawQuery("SELECT jogosultsag_id FROM " + USER_TABLE + " WHERE felhNeve=? AND felhJelszo=?", new String[]{userName,userPassword});
 
             if (cursor!=null && cursor.getCount()>0) {
@@ -693,7 +699,7 @@ public class Database extends SQLiteOpenHelper{
         }
 
         //Felhasználó módosítása
-        public Boolean userModify(String oldUserName,String userName, String userPassword, Boolean userStatus, Integer userPermission){
+        public Boolean userModify(String oldUserName,String userName, String userPassword, Boolean userStatus, int userPermission){
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
 
@@ -707,7 +713,7 @@ public class Database extends SQLiteOpenHelper{
         }
 
         //Felhasználó módosítása jelszó nélkül
-        public Boolean userModifyWithoutPassword(String oldUserName, String userName, Boolean userStatus, Integer userPermission){
+        public Boolean userModifyWithoutPassword(String oldUserName, String userName, Boolean userStatus, int userPermission){
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
 
@@ -721,7 +727,7 @@ public class Database extends SQLiteOpenHelper{
 
         //Felhasználónév létezésének ellenőrzése -- darabszám
         public Integer userNameCheckForModify(String username){
-            Integer userCount=0;
+            int userCount=0;
             SQLiteDatabase db = this.getWritableDatabase();
             Cursor eredmeny = db.rawQuery("SELECT COUNT("+USER_NAME+") AS eredmeny FROM " + USER_TABLE + " WHERE felhNeve='" + username +"'", null);
             if (eredmeny!=null && eredmeny.getCount()>0) {
@@ -739,7 +745,7 @@ public class Database extends SQLiteOpenHelper{
             String adminUserName = "admin";
             String adminPassword = "admin1234";
             Boolean adminStatus = true;
-            Integer adminPermission = 1;
+            int adminPermission = 1;
 
             contentValues.put(USER_NAME, adminUserName);
             contentValues.put(USER_PASSWORD, adminPassword);
@@ -805,5 +811,84 @@ public class Database extends SQLiteOpenHelper{
         }
 
 
+    /*
+    * POZÍCIÓVAL KAPCSOLATOS ADATBÁZIS PARANCSOK
+    * */
+
+        public Boolean positionCheck(String positionName){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + POSITION_TABLE + " WHERE beosztasNeve=?", new String[]{positionName});
+
+            if(cursor.getCount()>0){
+                return true;
+            }else return false;
+        }
+
+        //Pozició tábla feltöltése listába
+        public ArrayList<HashMap<String,String>> viewPositions(){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ArrayList<HashMap<String,String>> positionList = new ArrayList<>();
+
+            String query = "SELECT u."+ POSITION_NAME + ", p."+ GRADE_NAME + ", u."+ SALARY_MIN_VALUE +" , u."+ SALARY_MAX_VALUE +
+                    " FROM " + POSITION_TABLE + " AS u" +
+                    " LEFT JOIN " + GRADE_TABLE + " AS p ON u." + POSITION_GRADE_ID + " = p."+ GRADE_ID;
+
+            Cursor cursor = db.rawQuery(query,null);
+
+            while(cursor.moveToNext()){
+                HashMap<String,String> position = new HashMap<>();
+                position.put("POSITION_NAME",cursor.getString(cursor.getColumnIndex(POSITION_NAME)));
+                position.put("GRADE_NAME",cursor.getString(cursor.getColumnIndex(GRADE_NAME)));
+                position.put("SALARY_MIN_VALUE",cursor.getString(cursor.getColumnIndex(SALARY_MIN_VALUE)));
+                position.put("SALARY_MAX_VALUE",cursor.getString(cursor.getColumnIndex(SALARY_MAX_VALUE)));
+
+                positionList.add(position);
+            }
+            return positionList;
+        }
+
+        //Poziciók feltöltése listába
+        public ArrayList<String> viewPositionsByName(){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ArrayList<String> positionList = new ArrayList<>();
+
+            String query = "SELECT "+ POSITION_NAME + " AS beosztasNeve" +
+                    " FROM " + POSITION_TABLE;
+
+            Cursor cursor = db.rawQuery(query,null);
+
+            while(cursor.moveToNext()){
+                positionList.add(cursor.getString(cursor.getColumnIndex("beosztasNeve")));
+            }
+            return positionList;
+        }
+
+        //Beosztás módosítása
+        public Boolean positionModify(String oldPositioName, String newPositioName, int gradeId){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(POSITION_NAME, newPositioName);
+            contentValues.put(POSITION_GRADE_ID, gradeId);
+
+            int i = db.update(POSITION_TABLE, contentValues, POSITION_NAME + "=" + '"'+oldPositioName+'"',null);
+            return i > 0;
+        }
+
+        //Poziciók feltöltése listába
+        public ArrayList<Integer> viewPositionsByGrade(){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ArrayList<Integer> gradeList = new ArrayList<>();
+
+            String query = "SELECT "+ POSITION_GRADE_ID +
+                    " FROM " + POSITION_TABLE;
+
+            Cursor cursor = db.rawQuery(query,null);
+
+            while(cursor.moveToNext()){
+                gradeList.add(cursor.getInt(cursor.getColumnIndex("gradeNeve")));
+            }
+            return gradeList;
+        }
 
 }
